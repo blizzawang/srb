@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("com.wwj.srb") // 扩大组件扫描范围
+@ComponentScan({"com.wwj.srb","com.wwj.common"}) // 扩大组件扫描范围
 public class ServiceCoreApplication {
 
     public static void main(String[] args) {
