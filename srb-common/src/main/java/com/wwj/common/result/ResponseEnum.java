@@ -44,6 +44,7 @@ public enum ResponseEnum {
 
     PAY_UNIFIEDORDER_ERROR(401, "统一下单错误"),
 
+    ALIYUN_RESPONSE_ERRPR(-501, "阿里云短信服务响应失败"),
     ALIYUN_SMS_LIMIT_CONTROL_ERROR(-502, "短信发送过于频繁"),//业务限流
     ALIYUN_SMS_ERROR(-503, "短信发送失败"),//其他失败
 

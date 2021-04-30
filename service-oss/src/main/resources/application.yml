@@ -1,0 +1,16 @@
+server:
+  port: 8130 # 服务端口
+spring:
+  profiles:
+    active: dev # 环境设置
+  application:
+    name: service-oss # 服务名
+
+# 阿里云对象存储服务配置
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    keyId: LTAI5tDLGbjnGySF77CgFENF
+    keySecret: 4RWs8SauDXnhaQLjbLpRP9hRogHzYE
+    bucketName: srb-file-wwj
+

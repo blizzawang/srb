@@ -9,14 +9,17 @@ import com.wwj.srb.core.pojo.dto.ExcelDictDTO;
 import com.wwj.srb.core.pojo.entity.Dict;
 import com.wwj.srb.core.service.DictService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -31,8 +34,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
 
-    @Autowired
+    @Resource
     private DictMapper dictMapper;
+    @Resource
+    private RedisTemplate redisTemplate;
 
     @Transactional(rollbackFor = Exception.class) // 当出现异常时，进行回滚
     @Override
@@ -58,6 +63,19 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
 
     @Override
     public List<Dict> listByParentId(Long parentId) {
+        try {
+            //先向Redis查询是否存在数据列表
+            List<Dict> dictList = (List<Dict>) redisTemplate.opsForValue().get("srb:core:dictList:" + parentId);
+            if (dictList != null) {
+                // 如果Redis中存在，则直接返回Redis中的数据列表
+                log.info("从Redis中获取数据列表");
+                return dictList;
+            }
+        } catch (Exception e) {
+            log.error("Redis服务异常:" + ExceptionUtils.getStackTrace(e));
+        }
+        // 若Redis中不存在，则向数据库查询
+        log.info("从数据库中获取数据列表");
         List<Dict> list = baseMapper.selectList(
                 new LambdaQueryWrapper<Dict>()
                         .eq(Dict::getParentId, parentId));
@@ -68,6 +86,15 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
             dict.setHasChildren(hasChildren);
             return dict;
         }).collect(Collectors.toList());
+
+        try {
+            // 查询完数据库，将数据列表放入Redis，过期时间为五分钟
+            log.info("数据列表存入Redis");
+            redisTemplate.opsForValue().set("srb:core:dictList:" + parentId, dictList, 5, TimeUnit.MINUTES);
+        } catch (Exception e) {
+            log.error("Redis服务异常:" + ExceptionUtils.getStackTrace(e));
+        }
+        // 返回数据
         return dictList;
     }
 
