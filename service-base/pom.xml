@@ -28,9 +28,15 @@
             <artifactId>springfox-swagger2</artifactId>
         </dependency>
         <!--swagger ui-->
-        <dependency>
+        <!--<dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>-->
+        <!--swagger ui 扩展-->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>swagger-bootstrap-ui</artifactId>
+            <version>1.9.2</version>
         </dependency>
         <!--springboot redis-->
         <dependency>

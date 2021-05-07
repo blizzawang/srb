@@ -4,6 +4,7 @@ import com.wwj.common.result.R;
 import com.wwj.common.result.ResponseEnum;
 import com.wwj.common.result.exception.Assert;
 import com.wwj.common.util.RegexValidateUtils;
+import com.wwj.srb.base.util.JwtUtils;
 import com.wwj.srb.core.pojo.vo.LoginVO;
 import com.wwj.srb.core.pojo.vo.RegisterVO;
 import com.wwj.srb.core.pojo.vo.UserInfoVO;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/core/userInfo")
 @Slf4j
 @CrossOrigin
-public class ApiUserInfoController {
+public class UserInfoController {
 
     @Resource
     private RedisTemplate redisTemplate;
@@ -67,5 +68,17 @@ public class ApiUserInfoController {
         String ip = request.getRemoteAddr();
         UserInfoVO userInfoVO = userInfoService.login(loginVO, ip);
         return R.ok().data("userInfo", userInfoVO);
+    }
+
+    @ApiOperation("校验令牌")
+    @GetMapping("/checkToken")
+    public R checkToken(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        // 校验token
+        boolean result = JwtUtils.checkToken(token);
+        if (result)
+            return R.ok();
+        else
+            return R.setResult(ResponseEnum.LOGIN_AUTH_ERROR);
     }
 }

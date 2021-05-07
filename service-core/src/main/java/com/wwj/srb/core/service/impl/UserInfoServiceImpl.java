@@ -1,6 +1,9 @@
 package com.wwj.srb.core.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wwj.common.result.ResponseEnum;
 import com.wwj.common.result.exception.Assert;
@@ -12,6 +15,7 @@ import com.wwj.srb.core.mapper.UserLoginRecordMapper;
 import com.wwj.srb.core.pojo.entity.UserAccount;
 import com.wwj.srb.core.pojo.entity.UserInfo;
 import com.wwj.srb.core.pojo.entity.UserLoginRecord;
+import com.wwj.srb.core.pojo.query.UserInfoQuery;
 import com.wwj.srb.core.pojo.vo.LoginVO;
 import com.wwj.srb.core.pojo.vo.RegisterVO;
 import com.wwj.srb.core.pojo.vo.UserInfoVO;
@@ -113,5 +117,23 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         userInfoVO.setMobile(mobile);
         userInfoVO.setUserType(userType);
         return userInfoVO;
+    }
+
+    @Override
+    public IPage<UserInfo> listPage(Page<UserInfo> pageParam, UserInfoQuery userInfoQuery) {
+        if (userInfoQuery == null) {
+            return baseMapper.selectPage(pageParam, null);
+        }
+        String mobile = userInfoQuery.getMobile();
+        String status = userInfoQuery.getStatus();
+        String userType = userInfoQuery.getUserType();
+
+        // 封装查询条件
+        LambdaQueryWrapper<UserInfo> wrapper = new LambdaQueryWrapper<UserInfo>()
+                .eq(StringUtils.isNotBlank(mobile), UserInfo::getMobile, mobile)
+                .eq(status != null && !status.equals(""), UserInfo::getStatus, status)
+                .eq(userType != null && !userType.equals(""), UserInfo::getUserType, userType);
+
+        return baseMapper.selectPage(pageParam, wrapper);
     }
 }
