@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin/core/userInfo")
 @Slf4j
-@CrossOrigin
+//@CrossOrigin
 public class AdminUserInfoController {
 
     @Autowired
@@ -35,5 +35,16 @@ public class AdminUserInfoController {
         Page<UserInfo> pageParam = new Page<>(page, limit);
         IPage<UserInfo> pageModel = userInfoService.listPage(pageParam, userInfoQuery);
         return R.ok().data("pageModel", pageModel);
+    }
+
+    @ApiOperation("锁定或解锁用户")
+    @PutMapping("/lock/{id}/{status}")
+    public R lock(
+            @ApiParam(value = "用户id", required = true)
+            @PathVariable("id") Long id,
+            @ApiParam(value = "锁定状态(0：锁定 1：正常)", required = true)
+            @PathVariable("status") Integer status) {
+        userInfoService.lock(id, status);
+        return R.ok().message(status == 1 ? "解锁成功" : "锁定成功");
     }
 }

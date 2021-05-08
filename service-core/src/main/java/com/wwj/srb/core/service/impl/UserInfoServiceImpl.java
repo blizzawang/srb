@@ -136,4 +136,21 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
         return baseMapper.selectPage(pageParam, wrapper);
     }
+
+    @Override
+    public void lock(Long id, Integer status) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setId(id);
+        userInfo.setStatus(status);
+        baseMapper.updateById(userInfo);
+    }
+
+    @Override
+    public boolean checkMobile(String mobile) {
+        Integer count = baseMapper.selectCount(
+                new LambdaQueryWrapper<UserInfo>()
+                        .eq(UserInfo::getMobile, mobile)
+        );
+        return count > 0;
+    }
 }

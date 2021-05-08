@@ -37,4 +37,20 @@ public interface UserInfoService extends IService<UserInfo> {
 
 
     IPage<UserInfo> listPage(Page<UserInfo> pageParam, UserInfoQuery userInfoQuery);
+
+    /**
+     * 实现用户锁定
+     *
+     * @param id     待锁定的用户id
+     * @param status
+     */
+    void lock(Long id, Integer status);
+
+    /**
+     * 校验手机号是否已经被注册
+     *
+     * @param mobile 手机号
+     * @return 返回是否被注册，true：已经被注册；false：未被注册
+     */
+    boolean checkMobile(String mobile);
 }

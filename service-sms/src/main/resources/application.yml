@@ -17,6 +17,21 @@ spring:
         max-wait: -1 # 最大阻塞时间，负值表示没有限制，默认为-1
         max-idle: 8 # 最大空闲连接数，默认为8
         min-idle: 0 # 最小空闲连接数，默认为0
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.56.10:8848 # 配置nacos注册中心地址
+
+# openfeign默认的超时时间为1秒，为了防止远程调用出现超时的情况，这里将超时时间设置得更长一些
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 10000 # 连接超时配置
+        readTimeout: 60000 # 执行超时配置
+  sentinel:
+    enabled: true # 开启openfeign对sentinel的支持
+
 
 # 由于阿里云对个人短信验证码的审查力度过大，导致短信服务无法正常申请
 # 这里使用的是尚硅谷提供的阿里云账户进行短信发送，因此短信服务随时可能会失效
@@ -29,3 +44,6 @@ aliyun:
     key-secret: N7v6R4V3EJ1SGDZlsqtqo8QyVVMmtQ
     template-code: SMS_96695065
     sign-name: 谷粒
+logging:
+  level:
+    com.wwj.srb.sms.client.CoreUserInfoClient: DEBUG # 以debug级别监控远程服务接口
