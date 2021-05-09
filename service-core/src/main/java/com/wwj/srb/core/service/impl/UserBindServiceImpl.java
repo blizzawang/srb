@@ -16,6 +16,7 @@ import com.wwj.srb.core.pojo.vo.UserBindVO;
 import com.wwj.srb.core.service.UserBindService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -85,6 +86,7 @@ public class UserBindServiceImpl extends ServiceImpl<UserBindMapper, UserBind> i
         return FormHelper.buildForm(HfbConst.USERBIND_URL, paramMap);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void notify(Map<String, Object> paramMap) {
         String bindCode = (String) paramMap.get("bindCode");
