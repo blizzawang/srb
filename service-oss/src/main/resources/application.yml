@@ -5,6 +5,10 @@ spring:
     active: dev # 环境设置
   application:
     name: service-oss # 服务名
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.56.10:8848 # 配置nacos注册中心地址
 
 # 阿里云对象存储服务配置
 aliyun:
@@ -13,4 +17,5 @@ aliyun:
     keyId: LTAI5tDLGbjnGySF77CgFENF
     keySecret: 4RWs8SauDXnhaQLjbLpRP9hRogHzYE
     bucketName: srb-file-wwj
+
 

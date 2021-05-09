@@ -16,7 +16,7 @@ import java.io.InputStream;
 
 @Api(tags = "阿里云文件管理")
 @RestController
-@CrossOrigin
+//@CrossOrigin
 @RequestMapping("/api/oss/file")
 public class FileController {
 
