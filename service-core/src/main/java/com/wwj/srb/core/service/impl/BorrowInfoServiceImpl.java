@@ -8,16 +8,27 @@ import com.wwj.srb.core.enums.BorrowInfoStatusEnum;
 import com.wwj.srb.core.enums.BorrowerStatusEnum;
 import com.wwj.srb.core.enums.UserBindEnum;
 import com.wwj.srb.core.mapper.BorrowInfoMapper;
+import com.wwj.srb.core.mapper.BorrowerMapper;
 import com.wwj.srb.core.mapper.IntegralGradeMapper;
 import com.wwj.srb.core.mapper.UserInfoMapper;
 import com.wwj.srb.core.pojo.entity.BorrowInfo;
+import com.wwj.srb.core.pojo.entity.Borrower;
 import com.wwj.srb.core.pojo.entity.IntegralGrade;
 import com.wwj.srb.core.pojo.entity.UserInfo;
+import com.wwj.srb.core.pojo.vo.BorrowInfoApprovalVO;
+import com.wwj.srb.core.pojo.vo.BorrowerDetailVO;
 import com.wwj.srb.core.service.BorrowInfoService;
+import com.wwj.srb.core.service.BorrowerService;
+import com.wwj.srb.core.service.DictService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -34,6 +45,12 @@ public class BorrowInfoServiceImpl extends ServiceImpl<BorrowInfoMapper, BorrowI
     private UserInfoMapper userInfoMapper;
     @Resource
     private IntegralGradeMapper integralGradeMapper;
+    @Autowired
+    private DictService dictService;
+    @Resource
+    private BorrowerMapper borrowerMapper;
+    @Autowired
+    private BorrowerService borrowerService;
 
     @Override
     public BigDecimal getBorrowAmount(Long userId) {
@@ -70,5 +87,71 @@ public class BorrowInfoServiceImpl extends ServiceImpl<BorrowInfoMapper, BorrowI
         // 设置状态为审核中
         borrowInfo.setStatus(BorrowInfoStatusEnum.CHECK_RUN.getStatus());
         baseMapper.insert(borrowInfo);
+    }
+
+    @Override
+    public Integer getStatusByUserId(Long userId) {
+        List<Object> objects = baseMapper.selectObjs(
+                new LambdaQueryWrapper<BorrowInfo>()
+                        .select(BorrowInfo::getStatus)
+                        .eq(BorrowInfo::getUserId, userId));
+        if (objects.size() == 0) {
+            return BorrowInfoStatusEnum.NO_AUTH.getStatus();
+        }
+        return (Integer) objects.get(0);
+    }
+
+    @Override
+    public List<BorrowInfo> selectList() {
+        List<BorrowInfo> borrowInfoList = baseMapper.selectBorrowInfoList();
+        borrowInfoList.forEach(borrowInfo -> {
+            String returnMethod = dictService.getNameByParentDictCodeAndValue("returnMethod", borrowInfo.getReturnMethod());
+            String moneyUse = dictService.getNameByParentDictCodeAndValue("moneyUse", borrowInfo.getMoneyUse());
+            String status = BorrowInfoStatusEnum.getMsgByStatus(borrowInfo.getStatus());
+            borrowInfo.getParam().put("returnMethod", returnMethod);
+            borrowInfo.getParam().put("moneyUse", moneyUse);
+            borrowInfo.getParam().put("status", status);
+        });
+        return borrowInfoList;
+    }
+
+    @Override
+    public Map<String, Object> getBorrowInfoDetail(Long id) {
+        // 查询借款信息 BorrowInfo
+        BorrowInfo borrowInfo = baseMapper.selectById(id);
+        String returnMethod = dictService.getNameByParentDictCodeAndValue("returnMethod", borrowInfo.getReturnMethod());
+        String moneyUse = dictService.getNameByParentDictCodeAndValue("moneyUse", borrowInfo.getMoneyUse());
+        String status = BorrowInfoStatusEnum.getMsgByStatus(borrowInfo.getStatus());
+        borrowInfo.getParam().put("returnMethod", returnMethod);
+        borrowInfo.getParam().put("moneyUse", moneyUse);
+        borrowInfo.getParam().put("status", status);
+
+        // 查询借款人信息 BorrowerDetailVO
+        Borrower borrower = borrowerMapper.selectOne(
+                new LambdaQueryWrapper<Borrower>()
+                        .eq(Borrower::getUserId, borrowInfo.getUserId()));
+        BorrowerDetailVO borrowerDetailVO = borrowerService.getBorrowerDetailVOById(borrower.getId());
+
+        // 封装返回结果
+        Map<String, Object> result = new HashMap<>();
+        result.put("borrowInfo", borrowInfo);
+        result.put("borrower", borrowerDetailVO);
+        return result;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void approval(BorrowInfoApprovalVO borrowInfoApprovalVO) {
+        // 修改借款审核状态
+        Long borrowInfoId = borrowInfoApprovalVO.getId();
+        BorrowInfo borrowInfo = baseMapper.selectById(borrowInfoId);
+        borrowInfo.setStatus(borrowInfoApprovalVO.getStatus());
+        baseMapper.updateById(borrowInfo);
+
+        // 如果审核通过，则产生新的`标的`记录
+        if (borrowInfoApprovalVO.getStatus().intValue() == BorrowInfoStatusEnum.CHECK_OK.getStatus().intValue()) {
+            // 创建标的
+
+        }
     }
 }
