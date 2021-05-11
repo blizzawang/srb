@@ -20,6 +20,7 @@ import com.wwj.srb.core.pojo.vo.BorrowerDetailVO;
 import com.wwj.srb.core.service.BorrowInfoService;
 import com.wwj.srb.core.service.BorrowerService;
 import com.wwj.srb.core.service.DictService;
+import com.wwj.srb.core.service.LendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,6 +52,8 @@ public class BorrowInfoServiceImpl extends ServiceImpl<BorrowInfoMapper, BorrowI
     private BorrowerMapper borrowerMapper;
     @Autowired
     private BorrowerService borrowerService;
+    @Autowired
+    private LendService lendService;
 
     @Override
     public BigDecimal getBorrowAmount(Long userId) {
@@ -151,7 +154,7 @@ public class BorrowInfoServiceImpl extends ServiceImpl<BorrowInfoMapper, BorrowI
         // 如果审核通过，则产生新的`标的`记录
         if (borrowInfoApprovalVO.getStatus().intValue() == BorrowInfoStatusEnum.CHECK_OK.getStatus().intValue()) {
             // 创建标的
-
+            lendService.createLend(borrowInfoApprovalVO, borrowInfo);
         }
     }
 }

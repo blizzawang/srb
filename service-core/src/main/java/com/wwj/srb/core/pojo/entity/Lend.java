@@ -13,6 +13,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -113,5 +115,7 @@ public class Lend implements Serializable {
     @TableLogic
     private Boolean deleted;
 
-
+    @ApiModelProperty(value = "其它参数")
+    @TableField(exist = false)
+    private Map<String, Object> param = new HashMap<>();
 }
