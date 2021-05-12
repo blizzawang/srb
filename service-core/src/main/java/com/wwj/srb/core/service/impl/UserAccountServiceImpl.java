@@ -1,5 +1,6 @@
 package com.wwj.srb.core.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wwj.srb.core.enums.TransTypeEnum;
 import com.wwj.srb.core.hfb.FormHelper;
@@ -82,5 +83,13 @@ public class UserAccountServiceImpl extends ServiceImpl<UserAccountMapper, UserA
                 "充值");
         transFlowService.saveTransFlow(transFlowBO);
         return "success";
+    }
+
+    @Override
+    public BigDecimal getAccount(Long userId) {
+        UserAccount userAccount = baseMapper.selectOne(
+                new LambdaQueryWrapper<UserAccount>()
+                        .eq(UserAccount::getUserId, userId));
+        return userAccount.getAmount();
     }
 }

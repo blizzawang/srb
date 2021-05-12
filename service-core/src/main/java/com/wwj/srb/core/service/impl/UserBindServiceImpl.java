@@ -110,4 +110,12 @@ public class UserBindServiceImpl extends ServiceImpl<UserBindMapper, UserBind> i
         userInfo.setBindStatus(UserBindEnum.BIND_OK.getStatus());
         userInfoMapper.updateById(userInfo);
     }
+
+    @Override
+    public String getBindCodeByUserId(Long userId) {
+        UserBind userBind = baseMapper.selectOne(
+                new LambdaQueryWrapper<UserBind>()
+                        .eq(UserBind::getUserId, userId));
+        return userBind.getBindCode();
+    }
 }
