@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.wwj.common.result.R;
 import com.wwj.srb.core.pojo.entity.Borrower;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wwj.srb.core.pojo.vo.BorrowerApprovalVO;
 import com.wwj.srb.core.pojo.vo.BorrowerDetailVO;
 import com.wwj.srb.core.pojo.vo.BorrowerVO;
 
@@ -25,4 +26,6 @@ public interface BorrowerService extends IService<Borrower> {
     IPage<Borrower> listPage(Page<Borrower> pageParam, String keyword);
 
     BorrowerDetailVO getBorrowerDetailVOById(Long id);
+
+    void approval(BorrowerApprovalVO borrowerApprovalVO);
 }

@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wwj.srb.core.mapper.BorrowInfoMapper">
 
+    <select id="selectBorrowInfoList" resultType="com.wwj.srb.core.pojo.entity.BorrowInfo">
+        SELECT *, b.name, b.mobile
+        FROM borrow_info AS bi
+                 LEFT JOIN borrower AS b ON bi.user_id = b.user_id
+        WHERE bi.is_deleted = 0
+    </select>
 </mapper>

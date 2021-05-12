@@ -37,7 +37,7 @@ public class HfbConst {
     /**
      * 充值异步回调
      */
-    public static final String RECHARGE_NOTIFY_URL = "http://localhost/api/core/userAccount/notify";
+    public static final String RECHARGE_NOTIFY_URL = "http://localhost:8000/api/core/userAccount/notify";
     /**
      * 充值同步回调
      */
@@ -51,7 +51,7 @@ public class HfbConst {
     /**
      * 充值异步回调
      */
-    public static final String INVEST_NOTIFY_URL = "http://localhost/api/core/lendItem/notify";
+    public static final String INVEST_NOTIFY_URL = "http://localhost:8000/api/core/lendItem/notify";
     /**
      * 充值同步回调
      */
@@ -70,7 +70,7 @@ public class HfbConst {
     /**
      * 充值异步回调
      */
-    public static final String WITHDRAW_NOTIFY_URL = "http://localhost/api/core/userAccount/notifyWithdraw";
+    public static final String WITHDRAW_NOTIFY_URL = "http://localhost:8000/api/core/userAccount/notifyWithdraw";
     /**
      * 充值同步回调
      */
@@ -84,7 +84,7 @@ public class HfbConst {
     /**
      * 充值异步回调
      */
-    public static final String BORROW_RETURN_NOTIFY_URL = "http://localhost/api/core/lendReturn/notifyUrl";
+    public static final String BORROW_RETURN_NOTIFY_URL = "http://localhost:8000/api/core/lendReturn/notifyUrl";
     /**
      * 充值同步回调
      */

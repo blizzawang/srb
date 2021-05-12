@@ -1,7 +1,9 @@
 package com.wwj.srb.core.mapper;
 
-import com.wwj.srb.core.pojo.entity.BorrowInfo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.wwj.srb.core.pojo.entity.BorrowInfo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface BorrowInfoMapper extends BaseMapper<BorrowInfo> {
 
+    List<BorrowInfo> selectBorrowInfoList();
 }
