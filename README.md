@@ -1,3 +1,5 @@
+> **为了账户安全，本项目中的阿里云账户配置均已失效，你需要自己在阿里云平台开通相关服务进行接入。**
+
 # 项目环境
 
 首先说明一下项目环境：
@@ -273,6 +275,14 @@ Bucket名称可以随意填写，读写权限选择公共读：
 ![img](https://img-blog.csdnimg.cn/20210512213122469.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyNDUzMTE3,size_16,color_FFFFFF,t_70)
 
 而keyId和keySecret是你在创建对象存储服务时需要创建一个子账户，这就是子账户的keyId和keySecret，bucketName就是刚刚创建Bucket时填写的Bucket名称。
+
+这里需要注意的是，子账户需要添加OSS对象存储服务的权限：
+
+![img](https://img-blog.csdnimg.cn/2021051418341184.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyNDUzMTE3,size_16,color_FFFFFF,t_70)
+
+![img](https://img-blog.csdnimg.cn/20210514183437310.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyNDUzMTE3,size_16,color_FFFFFF,t_70)
+
+包括下面的短信服务，也是需要开通权限的。
 
 最后我们来修改`service-sms` 服务的配置文件：
 
