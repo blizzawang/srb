@@ -46,8 +46,8 @@ feign:
 aliyun:
   sms:
     region-id: cn-hangzhou
-    key-id: LTAI4G5Svnb2TWBMuKnNT6jY
-    key-secret: N7v6R4V3EJ1SGDZlsqtqo8QyVVMmtQ
+    key-id: xxxx
+    key-secret: xxxx
     template-code: SMS_96695065
     sign-name: 谷粒
 logging:
