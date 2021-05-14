@@ -219,9 +219,9 @@ Nacos的启动需要JDK的支持，所以你的CentOS7中必须有JDK的环境�
 一切准备就绪后，我们就可以启动项目了，本系统共分为四个项目：
 
 1. 后台接口系统：[https://gitee.com/blizzawang/srb](https://gitee.com/blizzawang/srb)
-2. 后台管理系统：[https://gitee.com/blizzawang/srb-admin](https://gitee.com/blizzawang/srb-admin)
-3. 用户前端系统：[https://gitee.com/blizzawang/srb-site](https://gitee.com/blizzawang/srb-site)
-4. 支付系统：[https://gitee.com/blizzawang/hfb](https://gitee.com/blizzawang/hfb)
+2. 后台管理系统：[https://github.com/blizzawang/srb-admin](https://github.com/blizzawang/srb-admin)
+3. 用户前端系统：[https://github.com/blizzawang/srb-site](https://github.com/blizzawang/srb-site)
+4. 支付系统：[https://github.com/blizzawang/hfb](https://github.com/blizzawang/hfb)
 
 其中后台接口和支付系统都是使用SpringBoot开发的项目，后台管理页面和用户前端页面是使用Vue + ElementUI进行开发的，我们先来启动一下前端项目，将前端项目克隆到本地后，执行指令：
 
