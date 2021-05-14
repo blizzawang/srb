@@ -21,6 +21,12 @@ spring:
     nacos:
       discovery:
         server-addr: 192.168.56.10:8848 # 配置nacos注册中心地址
+  rabbitmq:
+    host: 192.168.56.10
+    port: 5672
+    virtual-host: /srb-host
+    username: srb-user
+    password: 1234
 
 # openfeign默认的超时时间为1秒，为了防止远程调用出现超时的情况，这里将超时时间设置得更长一些
 feign:

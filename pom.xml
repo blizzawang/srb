@@ -10,6 +10,7 @@
         <module>service-oss</module>
         <module>service-sms</module>
         <module>service-gateway</module>
+        <module>rabbit-mq</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

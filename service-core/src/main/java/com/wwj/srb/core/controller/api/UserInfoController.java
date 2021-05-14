@@ -7,6 +7,7 @@ import com.wwj.common.util.RegexValidateUtils;
 import com.wwj.srb.base.util.JwtUtils;
 import com.wwj.srb.core.pojo.vo.LoginVO;
 import com.wwj.srb.core.pojo.vo.RegisterVO;
+import com.wwj.srb.core.pojo.vo.UserIndexVO;
 import com.wwj.srb.core.pojo.vo.UserInfoVO;
 import com.wwj.srb.core.service.UserInfoService;
 import io.swagger.annotations.Api;
@@ -86,5 +87,14 @@ public class UserInfoController {
     @GetMapping("/checkMobile/{mobile}")
     public boolean checkMobile(@PathVariable String mobile) {
         return userInfoService.checkMobile(mobile);
+    }
+
+    @ApiOperation("获取个人空间用户信息")
+    @GetMapping("/auth/getIndexUserInfo")
+    public R getIndexUserInfo(HttpServletRequest request) {
+        String token = request.getHeader("token");
+        Long userId = JwtUtils.getUserId(token);
+        UserIndexVO userIndexVO = userInfoService.getIndexUserInfo(userId);
+        return R.ok().data("userIndexVO", userIndexVO);
     }
 }
