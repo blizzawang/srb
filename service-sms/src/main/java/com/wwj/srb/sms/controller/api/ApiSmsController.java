@@ -7,14 +7,16 @@ import com.wwj.common.util.RandomUtils;
 import com.wwj.common.util.RegexValidateUtils;
 import com.wwj.srb.sms.client.CoreUserInfoClient;
 import com.wwj.srb.sms.service.SmsService;
-import com.wwj.srb.sms.util.SmsProperties;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -53,7 +55,7 @@ public class ApiSmsController {
         Map<String, Object> map = new HashMap<>();
         String code = RandomUtils.getFourBitRandom();
         map.put("code", code);
-        smsService.send(mobile, SmsProperties.TEMPLATE_CODE, map);
+//        smsService.send(mobile, SmsProperties.TEMPLATE_CODE, map); // 调用阿里云短信服务发送短信
 
         // 将验证码存入Redis，过期时间为5分钟
         redisTemplate.opsForValue().set("srb:sms:code:" + mobile, code, 5, TimeUnit.MINUTES);

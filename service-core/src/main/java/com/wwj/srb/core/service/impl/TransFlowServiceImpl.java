@@ -1,16 +1,17 @@
 package com.wwj.srb.core.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.wwj.srb.core.mapper.TransFlowMapper;
 import com.wwj.srb.core.mapper.UserInfoMapper;
 import com.wwj.srb.core.pojo.bo.TransFlowBO;
 import com.wwj.srb.core.pojo.entity.TransFlow;
-import com.wwj.srb.core.mapper.TransFlowMapper;
 import com.wwj.srb.core.pojo.entity.UserInfo;
 import com.wwj.srb.core.service.TransFlowService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -52,5 +53,13 @@ public class TransFlowServiceImpl extends ServiceImpl<TransFlowMapper, TransFlow
                 new LambdaQueryWrapper<TransFlow>()
                         .eq(TransFlow::getTransNo, agentBillNo));
         return count > 0;
+    }
+
+    @Override
+    public List<TransFlow> selectByUserId(Long userId) {
+        return baseMapper.selectList(
+                new LambdaQueryWrapper<TransFlow>()
+                        .eq(TransFlow::getUserId, userId)
+                        .orderByDesc(TransFlow::getId));
     }
 }

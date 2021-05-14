@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.wwj.srb.core.pojo.query.UserInfoQuery;
 import com.wwj.srb.core.pojo.vo.LoginVO;
 import com.wwj.srb.core.pojo.vo.RegisterVO;
+import com.wwj.srb.core.pojo.vo.UserIndexVO;
 import com.wwj.srb.core.pojo.vo.UserInfoVO;
 
 /**
@@ -53,4 +54,8 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return 返回是否被注册，true：已经被注册；false：未被注册
      */
     boolean checkMobile(String mobile);
+
+    UserIndexVO getIndexUserInfo(Long userId);
+
+    String getMobileByBindCode(String bindCode);
 }

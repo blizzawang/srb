@@ -11,6 +11,14 @@ spring:
         server-addr: 192.168.56.10:8848 # 配置nacos注册中心地址
 
 # 阿里云对象存储服务配置
+#aliyun:
+#  oss:
+#    endpoint: xxxxxx
+#    keyId: xxxxxx
+#    keySecret: xxxxxx
+#    bucketName: xxxxxx
+
+# 阿里云对象存储服务配置
 aliyun:
   oss:
     endpoint: oss-cn-beijing.aliyuncs.com

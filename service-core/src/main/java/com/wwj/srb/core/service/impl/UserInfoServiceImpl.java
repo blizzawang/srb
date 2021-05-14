@@ -18,6 +18,7 @@ import com.wwj.srb.core.pojo.entity.UserLoginRecord;
 import com.wwj.srb.core.pojo.query.UserInfoQuery;
 import com.wwj.srb.core.pojo.vo.LoginVO;
 import com.wwj.srb.core.pojo.vo.RegisterVO;
+import com.wwj.srb.core.pojo.vo.UserIndexVO;
 import com.wwj.srb.core.pojo.vo.UserInfoVO;
 import com.wwj.srb.core.service.UserInfoService;
 import org.springframework.stereotype.Service;
@@ -152,5 +153,44 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
                         .eq(UserInfo::getMobile, mobile)
         );
         return count > 0;
+    }
+
+    @Override
+    public UserIndexVO getIndexUserInfo(Long userId) {
+        //用户信息
+        UserInfo userInfo = baseMapper.selectById(userId);
+
+        //账户信息
+        UserAccount userAccount = userAccountMapper.selectOne(
+                new LambdaQueryWrapper<UserAccount>()
+                        .eq(UserAccount::getUserId, userId));
+        //登录信息
+        UserLoginRecord userLoginRecord = userLoginRecordMapper.selectOne(
+                new LambdaQueryWrapper<UserLoginRecord>()
+                        .eq(UserLoginRecord::getUserId, userId)
+                        .orderByDesc(UserLoginRecord::getId)
+                        .last("limit 1"));
+
+        //组装结果数据
+        UserIndexVO userIndexVO = new UserIndexVO();
+        userIndexVO.setUserId(userInfo.getId());
+        userIndexVO.setUserType(userInfo.getUserType());
+        userIndexVO.setName(userInfo.getName());
+        userIndexVO.setNickName(userInfo.getNickName());
+        userIndexVO.setHeadImg(userInfo.getHeadImg());
+        userIndexVO.setBindStatus(userInfo.getBindStatus());
+        userIndexVO.setAmount(userAccount.getAmount());
+        userIndexVO.setFreezeAmount(userAccount.getFreezeAmount());
+        userIndexVO.setLastLoginTime(userLoginRecord.getCreateTime());
+
+        return userIndexVO;
+    }
+
+    @Override
+    public String getMobileByBindCode(String bindCode) {
+        UserInfo userInfo = baseMapper.selectOne(
+                new LambdaQueryWrapper<UserInfo>()
+                        .eq(UserInfo::getBindCode, bindCode));
+        return userInfo.getMobile();
     }
 }
