@@ -216,10 +216,10 @@ Nacos的启动需要JDK的支持，所以你的CentOS7中必须有JDK的环境�
 
 一切准备就绪后，我们就可以启动项目了，本系统共分为四个项目：
 
-1. 后台接口：[https://gitee.com/blizzawang/srb](https://gitee.com/blizzawang/srb)
-2. 后台管理页面：[https://gitee.com/blizzawang/srb-admin](https://gitee.com/blizzawang/srb-admin)
-3. 用户前端页面：[https://gitee.com/blizzawang/srb-site](https://gitee.com/blizzawang/srb-site)
-4. 支付系统：
+1. 后台接口系统：[https://gitee.com/blizzawang/srb](https://gitee.com/blizzawang/srb)
+2. 后台管理系统：[https://gitee.com/blizzawang/srb-admin](https://gitee.com/blizzawang/srb-admin)
+3. 用户前端系统：[https://gitee.com/blizzawang/srb-site](https://gitee.com/blizzawang/srb-site)
+4. 支付系统：[https://gitee.com/blizzawang/hfb](https://gitee.com/blizzawang/hfb)
 
 其中后台接口和支付系统都是使用SpringBoot开发的项目，后台管理页面和用户前端页面是使用Vue + ElementUI进行开发的，我们先来启动一下前端项目，将前端项目克隆到本地后，执行指令：
 
@@ -279,6 +279,10 @@ Bucket名称可以随意填写，读写权限选择公共读：
 ![img](https://img-blog.csdnimg.cn/20210514134324786.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyNDUzMTE3,size_16,color_FFFFFF,t_70)
 
 将申请好的短信模板编号和名称填入即可，若是无法申请到短信，则我们可以在Redis中直接查看验证码，因为验证码会被存储到Redis中。
+
+由于短信发送需要支付一定的费用，所以默认关闭了短信发送的功能，如果想要开启，可以来到`ApiSmsController`，放开send()方法中的这一行代码注释即可：
+
+![img](https://img-blog.csdnimg.cn/20210514173946850.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQyNDUzMTE3,size_16,color_FFFFFF,t_70)
 
 最后启动支付项目，它为整个系统提供了支付功能，该项目同样需要修改配置文件：
 
